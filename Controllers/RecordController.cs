@@ -13,7 +13,7 @@ namespace Inventory.Api.Controllers
 
         public RecordController(
             AppDbContext context,
-            ILogger<ProductsController> logger)
+            ILogger<RecordController> logger)
         {
             this.context = context;
             this.logger = logger;
