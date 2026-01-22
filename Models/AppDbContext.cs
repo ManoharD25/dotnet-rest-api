@@ -10,10 +10,12 @@ namespace Inventory.Api.Models
 
         }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Record> Records { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().ToTable("product");
+            modelBuilder.Entity<Record>().ToTable("record");
         }
 
 

@@ -1,4 +1,4 @@
-using Inventory.Api.Models;
+﻿using Inventory.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Inventory API",
+        Title = "Inventory API - CI/CD Test",
         Version = "v1"
     });
 });
@@ -26,6 +26,26 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 var app = builder.Build();
+
+// SAFE EF CORE MIGRATION
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    try
+    {
+        db.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider
+            .GetRequiredService<ILogger<Program>>();
+
+        logger.LogError(ex, "An error occurred while applying migrations");
+        throw;
+    }
+}
+
+
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
